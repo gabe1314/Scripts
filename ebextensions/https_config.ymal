@@ -1,0 +1,137 @@
+--- 
+files: 
+  /etc/httpd/conf.d/ssl.conf: 
+    content: |
+        LoadModule ssl_module modules/mod_ssl.so
+        Listen 443
+        <VirtualHost *:443>
+          <Proxy *>
+          	Order deny,allow
+          	Allow from all
+          </Proxy>
+          SSLEngine on
+          SSLCertificateFile "/tmp/server.crt"
+          SSLCertificateKeyFile "/tmp/server.key"
+          SSLCACertificateFile "/tmp/cabundle.crt"
+          
+          ProxyPass / http://localhost:8080/ retry=0
+          ProxyPassReverse / http://localhost:8080/
+          ProxyPreserveHost on
+          
+          LogFormat "%h (%{X-Forwarded-For}i) %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\""
+          ErrorLog /var/log/httpd/elasticbeanstalk-error_log
+          TransferLog /var/log/httpd/elasticbeanstalk-access_log
+        </VirtualHost>
+    group: ec2-user
+    mode: 511
+    owner: ec2-user
+  /tmp/cabundle.crt: 
+    content: |
+        -----BEGIN CERTIFICATE-----
+MIIE0DCCA7igAwIBAgIBBzANBgkqhkiG9w0BAQsFADCBgzELMAkGA1UEBhMCVVMxEDAOBgNVBAgT
+B0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxGjAYBgNVBAoTEUdvRGFkZHkuY29tLCBJbmMu
+MTEwLwYDVQQDEyhHbyBEYWRkeSBSb290IENlcnRpZmljYXRlIEF1dGhvcml0eSAtIEcyMB4XDTEx
+MDUwMzA3MDAwMFoXDTMxMDUwMzA3MDAwMFowgbQxCzAJBgNVBAYTAlVTMRAwDgYDVQQIEwdBcml6
+b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMRowGAYDVQQKExFHb0RhZGR5LmNvbSwgSW5jLjEtMCsG
+A1UECxMkaHR0cDovL2NlcnRzLmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMTMwMQYDVQQDEypHbyBE
+YWRkeSBTZWN1cmUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IC0gRzIwggEiMA0GCSqGSIb3DQEBAQUA
+A4IBDwAwggEKAoIBAQC54MsQ1K92vdSTYuswZLiBCGzDBNliF44v/z5lz4/OYuY8UhzaFkVLVat4
+a2ODYpDOD2lsmcgaFItMzEUz6ojcnqOvK/6AYZ15V8TPLvQ/MDxdR/yaFrzDN5ZBUY4RS1T4KL7Q
+jL7wMDge87Am+GZHY23ecSZHjzhHU9FGHbTj3ADqRay9vHHZqm8A29vNMDp5T19MR/gd71vCxJ1g
+O7GyQ5HYpDNO6rPWJ0+tJYqlxvTV0KaudAVkV4i1RFXULSo6Pvi4vekyCgKUZMQWOlDxSq7neTOv
+DCAHf+jfBDnCaQJsY1L6d8EbyHSHyLmTGFBUNUtpTrw700kuH9zB0lL7AgMBAAGjggEaMIIBFjAP
+BgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUQMK9J47MNIMwojPX+2yz
+8LQsgM4wHwYDVR0jBBgwFoAUOpqFBxBnKLbv9r0FQW4gwZTaD94wNAYIKwYBBQUHAQEEKDAmMCQG
+CCsGAQUFBzABhhhodHRwOi8vb2NzcC5nb2RhZGR5LmNvbS8wNQYDVR0fBC4wLDAqoCigJoYkaHR0
+cDovL2NybC5nb2RhZGR5LmNvbS9nZHJvb3QtZzIuY3JsMEYGA1UdIAQ/MD0wOwYEVR0gADAzMDEG
+CCsGAQUFBwIBFiVodHRwczovL2NlcnRzLmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMA0GCSqGSIb3
+DQEBCwUAA4IBAQAIfmyTEMg4uJapkEv/oV9PBO9sPpyIBslQj6Zz91cxG7685C/b+LrTW+C05+Z5
+Yg4MotdqY3MxtfWoSKQ7CC2iXZDXtHwlTxFWMMS2RJ17LJ3lXubvDGGqv+QqG+6EnriDfcFDzkSn
+E3ANkR/0yBOtg2DZ2HKocyQetawiDsoXiWJYRBuriSUBAA/NxBti21G00w9RKpv0vHP8ds42pM3Z
+2Czqrpv1KrKQ0U11GIo/ikGQI31bS/6kA1ibRrLDYGCD+H1QQc7CoZDDu+8CL9IVVO5EFdkKrqeK
+M+2xLXY2JtwE65/3YR8V3Idv7kaWKK2hJn0KCacuBKONvPi8BDAB
+-----END CERTIFICATE-----
+    group: ec2-user
+    mode: 511
+    owner: ec2-user
+  /tmp/server.crt: 
+    content: |
+        -----BEGIN CERTIFICATE-----
+MIIFJjCCBA6gAwIBAgIIUPNNfhrVOqEwDQYJKoZIhvcNAQELBQAwgbQxCzAJBgNV
+BAYTAlVTMRAwDgYDVQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMRow
+GAYDVQQKExFHb0RhZGR5LmNvbSwgSW5jLjEtMCsGA1UECxMkaHR0cDovL2NlcnRz
+LmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMTMwMQYDVQQDEypHbyBEYWRkeSBTZWN1
+cmUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IC0gRzIwHhcNMTcwMjEwMTkxODAwWhcN
+MjAwMjIxMDEzMTM4WjA5MSEwHwYDVQQLExhEb21haW4gQ29udHJvbCBWYWxpZGF0
+ZWQxFDASBgNVBAMMCyouc2lndWUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+MIIBCgKCAQEAsrstuDMv39izoIajV2OYhq5HyN9hdcVQ9ZB4Ze3g2qV+IX9eZzsR
+mnzk9pqAmWCGRnrm2kokX3d1R4rLqU58n4onqPvYNxE5z2fDgKdHwRUsfJPqcBYk
+z85zgVggtl7lMtjX/KpL5Ru+iCOIbUYDSVyy3tRLOtkepGmxOoyJcdQVVtDbTS/i
++SMrC0IWw6WxpNHORNxXtO4o/DpHn7v4YEA2JrJqPVlm6OoySS5DUEYaqPorIWhf
+7I2OhyPTamcR9j46cV1feo3st8f4HacA/45KBEo0fdBxRf4TPwXCPcRTUQ6ExPGw
+h5Y9NcMM7s4g0qwVwGqZcVfgxXveyFt6yQIDAQABo4IBtDCCAbAwDAYDVR0TAQH/
+BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDgYDVR0PAQH/BAQD
+AgWgMDcGA1UdHwQwMC4wLKAqoCiGJmh0dHA6Ly9jcmwuZ29kYWRkeS5jb20vZ2Rp
+ZzJzMS00MDkuY3JsMF0GA1UdIARWMFQwSAYLYIZIAYb9bQEHFwEwOTA3BggrBgEF
+BQcCARYraHR0cDovL2NlcnRpZmljYXRlcy5nb2RhZGR5LmNvbS9yZXBvc2l0b3J5
+LzAIBgZngQwBAgEwdgYIKwYBBQUHAQEEajBoMCQGCCsGAQUFBzABhhhodHRwOi8v
+b2NzcC5nb2RhZGR5LmNvbS8wQAYIKwYBBQUHMAKGNGh0dHA6Ly9jZXJ0aWZpY2F0
+ZXMuZ29kYWRkeS5jb20vcmVwb3NpdG9yeS9nZGlnMi5jcnQwHwYDVR0jBBgwFoAU
+QMK9J47MNIMwojPX+2yz8LQsgM4wIQYDVR0RBBowGIILKi5zaWd1ZS5jb22CCXNp
+Z3VlLmNvbTAdBgNVHQ4EFgQUXw5bAmL+2GNRW+/hYAAjNZxWUYcwDQYJKoZIhvcN
+AQELBQADggEBAHva4PvxDQ3+1XrTUKnTjdU7AgRKhh6WWTc2olCqZMhvyjpCZzS9
+7n/VymJeThmyQ47YJVtho8AFCCsySiaQLX8ncgJ6On8D2TgxE5wxK4BR2WDFMILF
+T0uvYSPZv9sgulYZcjTpYjXzJbTehkx0po0TzSFYrkSu5faFHvX6/mPh14A4wN58
+juZ7WTy5SEwf4GdO3Yuyer0PE11KSZVLdxA6wc8nDk7W0zceGgLyxB0+SNZMUvmR
+pB4O4YO0FIUQFPhBb6p9LNoQF0sHXudFRqDZ1i6+sthYxPONz7xLEFKpnBuLPSTq
+8pZ/L7McAf+Q/safwj3J2s14NSDG5QkmRII=
+-----END CERTIFICATE-----
+    group: ec2-user
+    mode: 511
+    owner: ec2-user
+  /tmp/server.key: 
+    content: |
+        -----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyuy24My/f2LOg
+hqNXY5iGrkfI32F1xVD1kHhl7eDapX4hf15nOxGafOT2moCZYIZGeubaSiRfd3VH
+isupTnyfiieo+9g3ETnPZ8OAp0fBFSx8k+pwFiTPznOBWCC2XuUy2Nf8qkvlG76I
+I4htRgNJXLLe1Es62R6kabE6jIlx1BVW0NtNL+L5IysLQhbDpbGk0c5E3Fe07ij8
+Okefu/hgQDYmsmo9WWbo6jJJLkNQRhqo+ishaF/sjY6HI9NqZxH2PjpxXV96jey3
+x/gdpwD/jkoESjR90HFF/hM/BcI9xFNRDoTE8bCHlj01wwzuziDSrBXAaplxV+DF
+e97IW3rJAgMBAAECggEAKEyuJV9dRxK8hdB12gl55bw8MV20wvJHq+b0Tr9RONuh
+0fm/FnWqJXRNyBDUOEEcZZ3mmYeoJeJwjj4MZ9NrpClpgd+vQ9Ndfpd97G9LbYzR
+qBFOBhHoIPcC8kIlthk1gr6EDNN1I2abEmU4qLLloNAHANlLUSyNjTLLpFD12LVB
+uNS+9TTm6dXf/e80fwqvFqG0wLE3hcMle3gyTZo4k4vZ5OU9fp98fBHylVUWL495
+/qtM7U4JwiRPEoQylyFoC8xqIz17gXe+nLveSZZsEpJMuJOr/r0kVbeadhC71RZv
+FTRX8nDxLrfTU+Fv1ycdx5dtpCNrMLmeCoXrDDqfZQKBgQDg9p7eIOdz+Bc6RCpU
+MHhJEMBIFuolrJJHWW0fx1u38yFprx8F5WTX84z7pKSLwqH78q9HZhCGggORBoXr
+L7DdIgfaNTsSYiXPfjKzlTJ9DHD4Q6Y9OttKGyp6Ev7bxnNV84I66QWU+MiPjLz+
+vKcA4J/XJ/vUqzE16t2F09ThAwKBgQDLY7Q4AcEhHnMTGayIcqgdG86pzvmokLk8
+xJtEDXLEphMvEElS/LEPuEEM3oKxFIQYXm+xdrj3v20xlQC0kBXm/NjX84R27ydE
+qfT70Lyf7asUECbgBcz+goFovTw1ame7w840XQqoIec7FTwcolPxl0hbA8FUhyVs
+kitbU3fdQwKBgQDBWVXr5m3nj3gvPP0AhPQtIDeS/hbasHq81hBjOs4KyO2Tzs6k
+G6fTr2Ehuz0tXegpCkk53XAgm0gDco7RN5kURjZnhk6yGycSMg3TqUzOi03hIwuT
+Hq3xAG4+o2rma6cfXX41sad5hWWjczvQ2UXUDDt1Ccl43HYcODOS3SDfDwKBgA07
+p3YdZxtoh8QuX3NhQl7ieEfEF6pIAEVb5V5AIb95rrXZMWwc1MhZDKJxt78dvpp3
+Sn0ZZF96LPiU4T7eQQ6OVO14Ap5aYQuuoynfIuak6ASeKGla90N36kOOTGSNT8J/
+suLlStQ1oH3Pm+GhDiUh2qtRSzrcsCqoN/nxLFNRAoGBAIiEVxDJx7hJwnIRfOwY
+A3WMy8bUrhmJELM41L2Vpmm3c8b4jHBTYcTzU7zShZnRQ0WfLZCQCuQhp9vi/+Aw
+xVOUwhavboCH2yedX42iQesXACfju/Kmrr8iNqZKbfpIxfY8t1R8Rrvcqlomcyim
+/QUkipJwL3KWQ+2l0J7HBOru
+-----END PRIVATE KEY-----
+    group: ec2-user
+    mode: 511
+    owner: ec2-user
+packages: 
+  yum: 
+    mod_ssl: []
+services: 
+  sysvinit: 
+    httpd: 
+      enabled: true
+      ensureRunning: true
+      files: 
+        - /etc/httpd/conf.d/ssl.conf
+        - /tmp/server.key
+        - /tmp/server.crt
+        - /tmp/cabundle.crt
