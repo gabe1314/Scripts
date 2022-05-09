@@ -1,0 +1,11 @@
+import boto3
+
+def lambda_handler(event, context):
+    s3();
+    return;
+    
+def s3():
+    print('Processing s3 buckets')
+    s3 = boto3.client('s3')
+    result = s3.get_bucket_tagging(Bucket='adc-to-s3-us-east-1')
+    print(result)

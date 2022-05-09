@@ -1,0 +1,5 @@
+#!/bin/sh
+aws rds add-tags-to-resource --resource-name arn:aws:rds:us-east-1:765032730250:snapshot:q33sdsrds1-final-snapshot --tags "[{\"Key\": \"Application\",\"Value\": \"SiguePay\"},{\"Key\": \"Environment\",\"Value\": \"QA\"},{\"Key\": \"Function\",\"Value\": \"RDS_Database\"}]"
+aws rds add-tags-to-resource --resource-name arn:aws:rds:us-east-1:765032730250:snapshot:q33sossdb01-final-snapshot --tags "[{\"Key\": \"Application\",\"Value\": \"SiguePay\"},{\"Key\": \"Environment\",\"Value\": \"QA\"},{\"Key\": \"Function\",\"Value\": \"RDS_Database\"}]"
+aws rds add-tags-to-resource --resource-name arn:aws:rds:us-east-1:765032730250:snapshot:q33sossdb0101616 --tags "[{\"Key\": \"Application\",\"Value\": \"SiguePay\"},{\"Key\": \"Environment\",\"Value\": \"QA\"},{\"Key\": \"Function\",\"Value\": \"RDS_Database\"}]"
+aws rds add-tags-to-resource --resource-name arn:aws:rds:us-east-1:765032730250:snapshot:q33sossdb02 --tags "[{\"Key\": \"Application\",\"Value\": \"SiguePay\"},{\"Key\": \"Environment\",\"Value\": \"QA\"},{\"Key\": \"Function\",\"Value\": \"RDS_Database\"}]"

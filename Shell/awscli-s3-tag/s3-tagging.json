@@ -1,0 +1,12 @@
+{
+    "TagSet": [
+      {
+        "Key": "Application",
+        "Value": "Infrastructure"
+      },
+      {
+        "Key": "Function",
+        "Value": "s3"
+      }
+    ]
+ }
